@@ -191,7 +191,6 @@ bool SpiAnalyzer::WouldAdvancingTheClockToggleEnable()
 void SpiAnalyzer::GetWord()
 {
     //we're assuming we come into this function with the clock in the idle state;
-
     U32 bits_per_transfer = mSettings->mBitsPerTransfer;
     U32 bits_per_step = 1;
     U32 step_count = 0;
@@ -206,20 +205,26 @@ void SpiAnalyzer::GetWord()
 
     while(1) {
         if (step_count == 0) {
+            //Step 1 for start bit
             bits_per_step = 1;
         }
         else if (step_count == 1) {
+            //Step 2 for two bits op code
             bits_per_step = 2;
         }
         else if (step_count == 2) {
+            //Setp 3 for 11 or 10 bits address
             if (bits_per_transfer == 8) {
+                //Under org 8 config 11 bits for address
                 bits_per_step = 11;
             }
             else if (bits_per_transfer == 16) {
+                //Under org 16 config 10 bits for address
                 bits_per_step = 10;
             }
         }
         else if (step_count >= 3) {
+            //Left bits are data bits
             bits_per_step = bits_per_transfer;
         }
         DataBuilder mosi_result;
@@ -248,6 +253,7 @@ void SpiAnalyzer::GetWord()
                     mosi_result.AddBit(mMosi->GetBitState());
                 }
                 if (mMiso != NULL && step_count >= 3) {
+                    //Miso is meaningless at first three steps
                     mMiso->AdvanceToAbsPosition(mCurrentSample);
                     miso_result.AddBit(mMiso->GetBitState());
                 }

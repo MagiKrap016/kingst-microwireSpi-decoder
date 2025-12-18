@@ -170,3 +170,9 @@
 - 需要在无真实硬件时进行协议解码插件调试，可利用内置仿真数据生成功能。
 
 如需进一步扩展（例如增加更多 Microwire 变种、特殊命令解码、专用字段解析等），可以在现有 `GetWord` 状态机基础上增加新的帧类型和结果显示逻辑。
+
+## 8. 更多资料
+
+- Kingst Analyzer SDK 文档（含接口说明与示例仓库）：
+  https://github.com/flyghost/KingsVIS-Analyzer/tree/master
+  ***请按照SDK文档描述导入对应include路径和库文件， 否则无法编译通过。***
